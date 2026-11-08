@@ -29,7 +29,7 @@ function go(p){page=p;selected=null;document.querySelectorAll('.nav button').for
 document.getElementById('nav').addEventListener('click',e=>{let b=e.target.closest('button[data-page]');if(b)go(b.dataset.page)});
 document.getElementById('globalSearch').addEventListener('input',e=>{search=e.target.value; if(search.trim()){page='library';selected=null;document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page==='library'));}render()});
 document.getElementById('addBtn').onclick=()=>openModal();
-function render(){const root=document.getElementById('view');if(selected){let v=videos.find(x=>x.id===selected);if(v){root.innerHTML=detail(v);return;}selected=null}
+function render(){const root=document.getElementById('view');if(selected){let v=videos.find(x=>x.id===selected);if(v){root.innerHTML=detail(v);root.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>openModal(videos.find(x=>x.id===b.dataset.edit)));root.querySelectorAll('[data-delete]').forEach(b=>b.onclick=()=>{if(confirm('Delete this video and its notes?')){videos=videos.filter(x=>x.id!==b.dataset.delete);save();selected=null;render()}});return;}selected=null}
 if(page==='home')root.innerHTML=home();else if(page==='library')root.innerHTML=library();else if(page==='vocabulary')root.innerHTML=vocabulary();else if(page==='study')root.innerHTML=study();else root.innerHTML=settings();
 root.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>{selected=b.dataset.open;render()});
 root.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>openModal(videos.find(v=>v.id===b.dataset.edit)));
